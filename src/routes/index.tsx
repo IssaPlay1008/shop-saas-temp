@@ -82,11 +82,8 @@ function CatalogPage() {
       <div className="px-5 mt-7 flex items-end justify-between gap-3">
         <div className="min-w-0">
           <h2 className="font-display italic text-2xl leading-none">
-            {filter === "Todo" ? "Colección" : filter}
+            {filter === "Todo" ? "Catálogo" : filter}
           </h2>
-          <p className="mt-2 text-[9px] uppercase tracking-[0.3em] text-muted-foreground">
-            {filtered.length} {filtered.length === 1 ? "pieza" : "piezas"}
-          </p>
         </div>
         {filter !== "Todo" && (
           <button
@@ -114,7 +111,7 @@ function CatalogPage() {
         )}
         {filtered.length === 0 && (
           <div className="col-span-2 py-20 text-center text-muted-foreground font-display italic text-lg">
-            No hay piezas con esa búsqueda.
+            No hay productos con esa búsqueda.
           </div>
         )}
       </main>
@@ -219,7 +216,7 @@ function CategoriesDrawer({
               <div className="min-w-0">
                 <p className="font-display italic text-lg leading-tight truncate">{e.name}</p>
                 <p className="text-[9px] uppercase tracking-[0.25em] text-muted-foreground mt-0.5">
-                  {e.count} {e.count === 1 ? "pieza" : "piezas"}
+                  {e.count} {e.count === 1 ? "producto" : "productos"}
                 </p>
               </div>
             </button>
@@ -228,7 +225,7 @@ function CategoriesDrawer({
 
         <div className="px-5 py-5">
           <p className="text-[9px] uppercase tracking-[0.3em] text-muted-foreground">
-            Bandittzshop
+            Tu tienda
           </p>
         </div>
       </SheetContent>
@@ -270,7 +267,7 @@ function TopBar({
             type="text"
             value={query}
             onChange={(e) => onQuery(e.target.value)}
-            placeholder="buscar pieza..."
+            placeholder="buscar producto..."
             className="w-full bg-foreground/[0.05] border border-foreground/10 rounded-full py-2.5 pl-10 pr-4 text-sm focus:border-primary/50 outline-none placeholder:text-muted-foreground/60"
           />
         </div>
@@ -307,7 +304,7 @@ function TopBar({
           ))}
         </div>
         <span className="pb-3 font-display text-sm tracking-[0.12em] text-chrome whitespace-nowrap">
-          BANDITTZSHOP
+          CATÁLOGO
         </span>
       </div>
     </nav>
@@ -514,7 +511,7 @@ function CartDrawer({
     const message = [
       `¡Hola ${BRAND}! Soy ${trimmedName}.`,
       "",
-      "Quisiera reservar estas piezas:",
+      "Quisiera reservar estos productos:",
       ...lines,
       "",
       `*Total estimado: $${total.toFixed(2)}*`,
