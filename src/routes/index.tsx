@@ -545,13 +545,13 @@ function CartDrawer({
           )}
         </div>
         <SheetDescription className="sr-only">
-          Revisa las piezas, ajusta cantidades y envía tu pedido por WhatsApp.
+          Revisa los productos, ajusta cantidades y envía tu pedido por WhatsApp.
         </SheetDescription>
 
         <div className="flex-1 overflow-y-auto px-6 py-2 space-y-4">
           {detailedItems.length === 0 && (
             <div className="py-16 text-center text-sm text-muted-foreground font-display italic">
-              Aún no elegiste ninguna pieza.
+              Aún no elegiste ningún producto.
             </div>
           )}
           {detailedItems.map((i) => (
