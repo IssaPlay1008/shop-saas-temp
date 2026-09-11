@@ -80,21 +80,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Bandittzshop.com — Joyería en plata" },
+      { title: "Catálogo" },
       {
         name: "description",
         content:
-          "Joyería en plata y acero: anillos, cadenas, dijes y pulseras. Pedido directo por WhatsApp.",
+          "Catálogo de productos con stock real y pedido directo por WhatsApp.",
       },
-      { property: "og:title", content: "Bandittzshop.com — Joyería en plata" },
+      { property: "og:title", content: "Catálogo" },
       {
         property: "og:description",
-        content: "Joyería en plata y acero: anillos, cadenas, dijes y pulseras. Pedido directo por WhatsApp.",
+        content: "Catálogo de productos con stock real y pedido directo por WhatsApp.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Bandittzshop.com — Joyería en plata" },
-      { name: "twitter:description", content: "Joyería en plata y acero: anillos, cadenas, dijes y pulseras. Pedido directo por WhatsApp." },
+      { name: "twitter:title", content: "Catálogo" },
+      { name: "twitter:description", content: "Catálogo de productos con stock real y pedido directo por WhatsApp." },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

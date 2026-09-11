@@ -10,31 +10,31 @@ import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/components/
 import { cn } from "@/lib/utils";
 import { ProductGallery } from "@/components/product-gallery";
 
-const BRAND = "Bandittzshop.com";
+const BRAND = "Tu tienda";
 
 export const Route = createFileRoute("/")({
   component: CatalogPage,
   head: () => ({
     meta: [
-      { title: "Bandittzshop.com — Joyería en plata" },
+      { title: "Catálogo" },
       {
         name: "description",
         content:
-          "Anillos, cadenas, pulseras y dijes en plata. Piezas seleccionadas, stock real y pedido directo por WhatsApp.",
+          "Catálogo de productos con stock real y pedido directo por WhatsApp.",
       },
-      { property: "og:title", content: "Bandittzshop.com — Joyería en plata" },
+      { property: "og:title", content: "Catálogo" },
       {
         property: "og:description",
         content:
-          "Anillos, cadenas, pulseras y dijes en plata. Piezas seleccionadas y pedido directo por WhatsApp.",
+          "Catálogo de productos con stock real y pedido directo por WhatsApp.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Bandittzshop.com — Joyería en plata" },
+      { name: "twitter:title", content: "Catálogo" },
       {
         name: "twitter:description",
         content:
-          "Anillos, cadenas, pulseras y dijes en plata. Piezas seleccionadas y pedido directo por WhatsApp.",
+          "Catálogo de productos con stock real y pedido directo por WhatsApp.",
       },
     ],
   }),

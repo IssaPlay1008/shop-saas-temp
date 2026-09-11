@@ -17,7 +17,7 @@ const AUTH_KEY = "bandittz-admin-auth-v1";
 
 export const Route = createFileRoute("/admin")({
   component: AdminPage,
-  head: () => ({ meta: [{ title: "Bandittzshop.com — Admin" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Admin" }, { name: "robots", content: "noindex" }] }),
 });
 
 function AdminPage() {
@@ -77,7 +77,7 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
         className="w-full max-w-sm bg-surface border border-foreground/10 rounded-sm p-8 shadow-deep space-y-6"
       >
         <div className="text-center space-y-2">
-          <h1 className="font-display text-xl tracking-[0.12em] text-chrome">BANDITTZSHOP</h1>
+          <h1 className="font-display text-xl tracking-[0.12em] text-chrome">ADMIN</h1>
           <p className="text-[9px] uppercase tracking-[0.3em] text-muted-foreground">
             Panel de administración
           </p>
@@ -153,7 +153,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
           <ArrowLeft className="size-4" /> Catálogo
         </Link>
         <h1 className="font-display text-sm tracking-[0.12em] text-chrome whitespace-nowrap">
-          BANDITTZSHOP
+          CATÁLOGO
         </h1>
         <div className="flex items-center gap-2">
           <button
