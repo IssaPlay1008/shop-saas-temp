@@ -1,68 +1,30 @@
-# Bandittz-shop
+# shop-saas-temp 🚀
 
-1. Aplicación Pública (El Catálogo Ligero)
+A highly optimized, multi-tenant e-commerce platform structure designed to transform fragmented direct-message sales (WhatsApp & Instagram DMs) into streamlined, conversion-oriented mobile-first checkout pipelines.
 
-El objetivo aquí es la máxima velocidad de carga y cero fricción para el usuario.
+The core objective of `shop-saas-temp` is to eliminate customer friction and prevent cart abandonment during social commerce transactions by generating instant, pre-formatted order contracts routed directly to merchant communication channels.
 
-A. Interfaz y Navegación (UI/UX)
+## 🛠️ System Architecture & Ecosystem
+- **Frontend Core:** Single Page Application (SPA) architecture optimized for rapid mobile web loading speeds and client-side real-time query filtering.
+- **Backend Architecture:** Relational database systems and user management handled via **Supabase** and **PostgreSQL**, engineered with data isolation rules to support scalable independent brand instances.
+- **State & Storage Management:** Persistent user cart instances utilizing browser-level `localStorage` protocols to maintain state integrity across sessions.
+- **Integration Engine:** Dynamic URL compiler that formats detailed cart objects into clean, transaction-ready strings for native WhatsApp API redirection.
 
-Barra de navegación minimalista: Logo/nombre del emprendimiento, barra de búsqueda en tiempo real y el ícono flotante del carrito con contador de productos.
+## 🚀 Key Product Features & Logic
+* **Asynchronous Local Search:** Real-time data caching and predictive text input to filter catalog indices locally, reducing round-trip server requests.
+* **Conversion-Driven UX Layout:** High-throughput product matrices featuring adaptive inventory counters, automatic purchase window validation, and dynamic cross-selling modal behaviors.
+* **Flexible Staging Framework:** Built natively using modern deployment flows and cloud development interfaces, allowing rapid component updates without breaking core architectural contracts.
 
-Buscador predictivo: Un input que filtre localmente por nombre o palabra clave (ej: escribes "limpieza" y filtra los inciensos con ese tag).
+## 📈 Production Status
+This base template functions as the core engine for active local deployments. It is currently acting as the staging framework for **3 test client instances in production**, serving as a validated proof-of-concept for automated storefront management.
 
-Filtros rápidos (Tabs): Botones superiores para filtrar al instante por tipo (Varillas, Conos, Resinas) o por intención (Relajación, Energía, Enfoque).
+## ⚙️ Development Environment Setup
 
-Cuadrícula de productos (Grid): Tarjetas compactas con:
-
-Imagen del incienso.
-
-Nombre y precio.
-
-Etiqueta de stock (si quedan pocas unidades, mostrar "¡Últimos disponibles!"; si está en 0, deshabilitar botón y mostrar "Agotado").
-
-Botón directo de [ + Añadir ].
-
-Modal de detalle (Ventana emergente): Se activa al tocar la tarjeta del producto. Muestra:
-
-Descripción del aroma y sus propiedades.
-
-Recomendaciones de uso (cómo y cuándo encenderlo).
-
-Sección de productos recomendados relacionados (Cross-selling).
-
-B. Sistema del Carrito e Integración
-
-Sidebar/Desplegable del Carrito: Muestra el desglose de lo seleccionado, permite sumar/restar unidades y calcula el total al instante.
-
-Persistencia local (localStorage): Si el cliente cierra el navegador por error, su carrito sigue ahí al volver.
-
-Formulario de Checkout simplificado: Un pequeño módulo al final del carrito que pida:
-
-Nombre del cliente.
-
-Botón de envío a WhatsApp: Un generador de URL dinámico que compile el texto formateado con el pedido completo y redirija al chat de la empresa
-
-la app esta enfocada a moviles asi q ajusta el diseno a eso, tambien usaremos supabase para el backend igual puedes usar lovablestorage para las pruebas antes del release
-
-This project was built with [Lovable](https://lovable.dev).
-
-**Live app**: https://bandittzshop.lovable.app
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/d4952c6d-a5d3-48bb-afcb-af17bb113ac7).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+To run a development instance of this template locally, ensure you have Node.js installed, then execute:
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+git clone https://github.com
+cd shop-saas-temp
+npm install
 npm run dev
 ```
