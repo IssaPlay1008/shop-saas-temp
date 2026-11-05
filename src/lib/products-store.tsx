@@ -71,6 +71,7 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
           image: row.image ?? "",
           images: (row as { images?: string[] }).images ?? [],
           type: row.type ?? "",
+          tags: ((row as { tags?: string[] }).tags ?? []).slice(0, 5),
           tagline: row.tagline ?? "",
           description: row.description ?? "",
           usage: row.usage ?? "",

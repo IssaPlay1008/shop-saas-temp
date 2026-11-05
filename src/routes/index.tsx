@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Search, Plus, X, Minus, ShoppingBag, Menu } from "lucide-react";
 
@@ -49,18 +49,21 @@ function CatalogPage() {
   const [view, setView] = useState<"inicio" | "articulos">("inicio");
 
   const { count } = useCart();
-  const { visibleProducts, getProduct } = useStore();
+  const { visibleProducts, getProduct, types } = useStore();
+  const navigate = useNavigate();
+  const openProduct = (id: string) => navigate({ to: "/producto/$id", params: { id } });
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return visibleProducts.filter((p) => {
-      if (filter !== "Todo" && p.type !== filter) return false;
+      if (filter !== "Todo" && !(p.tags?.length ? p.tags : [p.type]).includes(filter)) return false;
       if (!q) return true;
       return (
         p.name.toLowerCase().includes(q) ||
         p.tagline.toLowerCase().includes(q) ||
         p.description.toLowerCase().includes(q) ||
-        p.type.toLowerCase().includes(q)
+        p.type.toLowerCase().includes(q) ||
+        (p.tags ?? []).some((t) => t.toLowerCase().includes(q))
       );
     });
   }, [query, filter, visibleProducts]);
@@ -79,7 +82,24 @@ function CatalogPage() {
         onView={setView}
       />
 
-      <div className="px-5 mt-7 flex items-end justify-between gap-3">
+      <div className="mt-5 flex gap-2 overflow-x-auto no-scrollbar px-5">
+        {["Todo", ...types].map((t) => (
+          <button
+            key={t}
+            onClick={() => setFilter(t)}
+            className={cn(
+              "shrink-0 px-4 py-2 rounded-full text-xs font-medium transition-colors",
+              filter === t
+                ? "bg-primary text-primary-foreground"
+                : "bg-surface text-muted-foreground hover:text-foreground",
+            )}
+          >
+            {t === "Todo" ? "Todo" : t}
+          </button>
+        ))}
+      </div>
+
+      <div className="px-5 mt-6 flex items-end justify-between gap-3">
         <div className="min-w-0">
           <h2 className="font-display italic text-2xl leading-none">
             {filter === "Todo" ? "Catálogo" : filter}
@@ -99,14 +119,14 @@ function CatalogPage() {
       <main
         className={cn(
           "mt-5 animate-ritual-fade",
-          view === "inicio" ? "px-5 grid grid-cols-2 gap-3" : "px-5 flex flex-col divide-y divide-foreground/10",
+          view === "inicio" ? "px-5 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5 max-w-6xl mx-auto" : "px-5 flex flex-col divide-y divide-foreground/10",
         )}
       >
         {filtered.map((p) =>
           view === "inicio" ? (
-            <ProductCard key={p.id} product={p} onOpen={() => setDetailId(p.id)} />
+            <ProductCard key={p.id} product={p} onOpen={() => openProduct(p.id)} />
           ) : (
-            <ProductRow key={p.id} product={p} onOpen={() => setDetailId(p.id)} />
+            <ProductRow key={p.id} product={p} onOpen={() => openProduct(p.id)} />
           ),
         )}
         {filtered.length === 0 && (
@@ -175,7 +195,7 @@ function CategoriesDrawer({
   const entries = [
     { name: "Todo", count: visibleProducts.length, image: visibleProducts[0]?.image },
     ...types.map((t) => {
-      const items = visibleProducts.filter((p) => p.type === t);
+      const items = visibleProducts.filter((p) => (p.tags?.length ? p.tags : [p.type]).includes(t));
       return { name: t, count: items.length, image: items[0]?.image };
     }),
   ];
@@ -316,51 +336,47 @@ function ProductCard({ product, onOpen }: { product: Product; onOpen: () => void
   const outOfStock = product.stock <= 0;
 
   return (
-    <button
-      onClick={onOpen}
-      className={cn(
-        "relative block w-full aspect-[3/4] bg-surface rounded-sm overflow-hidden border border-foreground/10 group text-left",
-        outOfStock && "opacity-70",
-      )}
-    >
-      <img
-        src={resolveImage(product.image)}
-        alt={product.name}
-        loading="lazy"
-        width={800}
-        height={1000}
-        className={cn(
-          "absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-[var(--ease-ritual)] group-hover:scale-[1.05]",
-          outOfStock && "grayscale",
-        )}
-      />
-      <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-background via-background/70 to-transparent" />
-
-      {outOfStock ? (
-        <span className="absolute top-3 left-3 text-[9px] font-semibold uppercase tracking-[0.25em] bg-background/80 px-2 py-1 rounded-sm">
-          Agotado
-        </span>
-      ) : (
-        <span
-          role="button"
-          aria-label={`Añadir ${product.name}`}
-          onClick={(e) => {
-            e.stopPropagation();
-            add(product.id);
-          }}
-          className="absolute top-3 right-3 size-8 bg-background/70 backdrop-blur border border-foreground/20 rounded-sm flex items-center justify-center text-foreground active:scale-95 transition-transform"
-        >
-          <Plus className="size-4" strokeWidth={2} />
-        </span>
-      )}
-
-      <div className="absolute inset-x-0 bottom-0 p-3">
-        <h3 className="font-display italic text-[15px] leading-tight">{product.name}</h3>
-        <p className="text-xs font-mono tracking-tight text-chrome mt-1">
+    <div className={cn("group text-left", outOfStock && "opacity-70")}>
+      <div className="relative w-full aspect-[4/5] bg-surface rounded-3xl overflow-hidden border border-foreground/5">
+        <button onClick={onOpen} aria-label={product.name} className="absolute inset-0">
+          <img
+            src={resolveImage(product.image)}
+            alt={product.name}
+            loading="lazy"
+            width={800}
+            height={1000}
+            className={cn(
+              "w-full h-full object-cover transition-transform duration-700 ease-[var(--ease-ritual)] group-hover:scale-[1.05]",
+              outOfStock && "grayscale",
+            )}
+          />
+        </button>
+        <span className="pointer-events-none absolute bottom-3 left-3 px-3 py-1 rounded-full bg-background/85 backdrop-blur text-xs font-semibold font-mono">
           ${product.price.toFixed(2)}
-        </p>
+        </span>
+        {outOfStock ? (
+          <span className="pointer-events-none absolute top-3 left-3 text-[10px] font-semibold uppercase tracking-wider bg-background/85 px-2.5 py-1 rounded-full">
+            Agotado
+          </span>
+        ) : (
+          <button
+            aria-label={`Añadir ${product.name}`}
+            onClick={() => add(product.id)}
+            className="absolute top-3 right-3 size-9 rounded-full bg-background/85 backdrop-blur flex items-center justify-center active:scale-95 transition-transform hover:bg-primary hover:text-primary-foreground"
+          >
+            <Plus className="size-4" strokeWidth={2.25} />
+          </button>
+        )}
       </div>
-    </button>
+      <button onClick={onOpen} className="block w-full text-left px-1 pt-2.5">
+        <h3 className="text-sm font-medium leading-snug line-clamp-2">{product.name}</h3>
+        {(product.tags?.[0] || product.type) && (
+          <p className="text-[11px] text-muted-foreground mt-0.5 truncate">
+            {product.tags?.[0] || product.type}
+          </p>
+        )}
+      </button>
+    </div>
   );
 }
 

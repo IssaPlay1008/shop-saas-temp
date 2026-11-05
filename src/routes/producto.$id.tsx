@@ -121,7 +121,7 @@ function ProductPage() {
           <button
             onClick={() => navigate({ to: "/" })}
             aria-label="Volver"
-            className="size-10 shrink-0 flex items-center justify-center rounded-sm border border-foreground/15 hover:border-foreground/40 transition-colors"
+            className="size-10 shrink-0 flex items-center justify-center rounded-full border border-foreground/15 hover:border-foreground/40 transition-colors"
           >
             <ArrowLeft className="size-4" strokeWidth={1.75} />
           </button>
@@ -131,7 +131,7 @@ function ProductPage() {
           <Link
             to="/"
             aria-label="Ver carrito"
-            className="relative size-10 shrink-0 flex items-center justify-center rounded-sm border border-foreground/15 hover:border-foreground/40 transition-colors"
+            className="relative size-10 shrink-0 flex items-center justify-center rounded-full border border-foreground/15 hover:border-foreground/40 transition-colors"
           >
             <ShoppingBag className="size-4" strokeWidth={1.75} />
             {count > 0 && (
@@ -145,14 +145,16 @@ function ProductPage() {
 
       <main className="mx-auto max-w-5xl md:px-6 md:py-10 animate-ritual-fade">
         <div className="md:grid md:grid-cols-2 md:gap-10 md:items-start">
-          <div className="md:sticky md:top-24 md:rounded-sm md:overflow-hidden md:border md:border-foreground/10">
-            <ProductGallery product={product} />
+          <div className="px-4 pt-4 md:p-0 md:sticky md:top-24">
+            <div className="rounded-3xl overflow-hidden border border-foreground/5">
+              <ProductGallery product={product} thumbnails />
+            </div>
           </div>
 
           <div className="px-5 pt-6 md:px-0 md:pt-0">
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
-                <h1 className="font-display italic text-3xl leading-tight">{product.name}</h1>
+                <h1 className="font-display text-3xl leading-tight">{product.name}</h1>
                 {product.tagline && (
                   <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground mt-2">
                     {product.tagline}
@@ -162,11 +164,27 @@ function ProductPage() {
               <button
                 onClick={handleShare}
                 aria-label="Compartir producto"
-                className="size-10 shrink-0 flex items-center justify-center rounded-sm border border-foreground/15 hover:border-foreground/40 transition-colors"
+                className="size-10 shrink-0 flex items-center justify-center rounded-full border border-foreground/15 hover:border-foreground/40 transition-colors"
               >
                 {copied ? <Check className="size-4" /> : <Share2 className="size-4" strokeWidth={1.75} />}
               </button>
             </div>
+
+            {(() => {
+              const tags = (product.tags?.length ? product.tags : product.type ? [product.type] : []).slice(0, 5);
+              return tags.length > 0 ? (
+                <ul className="mt-4 flex flex-wrap gap-1.5" aria-label="Etiquetas">
+                  {tags.map((t) => (
+                    <li
+                      key={t}
+                      className="px-2.5 py-1 rounded-full bg-surface border border-foreground/10 text-[11px] text-muted-foreground"
+                    >
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              ) : null;
+            })()}
 
             <div className="mt-5 flex items-center gap-4">
               <p className="font-mono text-2xl text-chrome">${product.price.toFixed(2)}</p>
@@ -210,10 +228,10 @@ function ProductPage() {
                 <span className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
                   Cantidad
                 </span>
-                <div className="flex items-center gap-2 bg-surface rounded-sm p-1 border border-foreground/10">
+                <div className="flex items-center gap-2 bg-surface rounded-full p-1 border border-foreground/10">
                   <button
                     onClick={() => setQty((q) => Math.max(1, q - 1))}
-                    className="size-8 flex items-center justify-center rounded-sm hover:bg-foreground/10"
+                    className="size-8 flex items-center justify-center rounded-full hover:bg-foreground/10"
                     aria-label="Reducir cantidad"
                   >
                     <Minus className="size-3.5" />
@@ -222,7 +240,7 @@ function ProductPage() {
                   <button
                     onClick={() => setQty((q) => Math.min(maxQty, q + 1))}
                     disabled={qty >= maxQty}
-                    className="size-8 flex items-center justify-center rounded-sm hover:bg-foreground/10 disabled:opacity-30"
+                    className="size-8 flex items-center justify-center rounded-full hover:bg-foreground/10 disabled:opacity-30"
                     aria-label="Aumentar cantidad"
                   >
                     <Plus className="size-3.5" />
@@ -273,7 +291,7 @@ function ActionButtons({
       <button
         onClick={onAdd}
         disabled={outOfStock}
-        className="w-full py-4 bg-chrome text-primary-foreground rounded-sm text-[11px] font-bold uppercase tracking-[0.25em] transition-transform active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        className="w-full py-4 bg-chrome text-primary-foreground rounded-full text-[11px] font-bold uppercase tracking-[0.25em] transition-transform active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
       >
         {added && <Check className="size-4" />}
         {outOfStock ? "Agotado" : added ? "Añadido al pedido" : "Añadir al carrito"}
@@ -281,7 +299,7 @@ function ActionButtons({
       <button
         onClick={onWhatsApp}
         disabled={outOfStock}
-        className="w-full py-3.5 rounded-sm border border-foreground/20 text-[11px] font-semibold uppercase tracking-[0.25em] flex items-center justify-center gap-2 disabled:opacity-40 active:scale-[0.98] transition-transform"
+        className="w-full py-3.5 rounded-full border border-foreground/20 text-[11px] font-semibold uppercase tracking-[0.25em] flex items-center justify-center gap-2 disabled:opacity-40 active:scale-[0.98] transition-transform"
       >
         <WhatsAppIcon />
         Preguntar por WhatsApp
@@ -311,7 +329,7 @@ function RelatedProducts({ product }: { product: Product }) {
             params={{ id: r.id }}
             className="text-left group"
           >
-            <div className="aspect-square w-full rounded-sm overflow-hidden bg-surface mb-2 border border-foreground/10">
+            <div className="aspect-square w-full rounded-2xl overflow-hidden bg-surface mb-2 border border-foreground/10">
               <img
                 src={resolveImage(r.image)}
                 alt={r.name}

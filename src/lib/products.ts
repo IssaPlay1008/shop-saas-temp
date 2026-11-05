@@ -14,6 +14,8 @@ export interface Product {
   image: string;
   images?: string[];
   type: ProductType;
+  /** Hasta 5 etiquetas. */
+  tags?: string[];
   tagline: string;
   description: string;
   usage: string;

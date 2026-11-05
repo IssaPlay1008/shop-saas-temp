@@ -132,6 +132,7 @@ export const adminSaveProduct = createServerFn({ method: "POST" })
       image: p.image ?? "",
       images: p.images ?? [],
       type: p.type ?? "",
+      tags: (p.tags ?? []).slice(0, 5),
       tagline: p.tagline ?? "",
       description: p.description ?? "",
       usage: p.usage ?? "",
@@ -192,6 +193,11 @@ export const adminRenameTag = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
 
     await db.from("products").update({ type: data.newName }).eq("type", data.oldName);
+    const { data: rows } = await db.from("products").select("id, tags").contains("tags", [data.oldName]);
+    for (const r of rows ?? []) {
+      const tags = Array.from(new Set((r.tags ?? []).map((t: string) => (t === data.oldName ? data.newName : t))));
+      await db.from("products").update({ tags }).eq("id", r.id);
+    }
     await db.from(TABLE).delete().eq("name", data.oldName);
     return { ok: true as const };
   });

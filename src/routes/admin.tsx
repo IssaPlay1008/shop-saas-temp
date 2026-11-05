@@ -442,7 +442,13 @@ function ProductForm({
     initial?.images?.length ? initial.images : initial?.image ? [initial.image] : [],
   );
   const [urlInput, setUrlInput] = useState("");
-  const [type, setType] = useState(initial?.type ?? types[0] ?? "");
+  const [tags, setTags] = useState<string[]>(
+    initial?.tags?.length ? initial.tags.slice(0, 5) : initial?.type ? [initial.type] : [],
+  );
+  const toggleTag = (t: string) =>
+    setTags((prev) =>
+      prev.includes(t) ? prev.filter((x) => x !== t) : prev.length >= 5 ? prev : [...prev, t],
+    );
   const [tagline, setTagline] = useState(initial?.tagline ?? "");
   const [description, setDescription] = useState(initial?.description ?? "");
   const [active, setActive] = useState(initial?.active !== false);
@@ -456,7 +462,7 @@ function ProductForm({
     const t = newType.trim();
     if (!t) return;
     if (!types.includes(t)) void addType(t);
-    setType(t);
+    setTags((prev) => (prev.includes(t) || prev.length >= 5 ? prev : [...prev, t]));
     setNewType("");
   };
 
@@ -496,7 +502,8 @@ function ProductForm({
       stock: Math.max(0, Math.floor(Number(stock) || 0)),
       image: images[0] ?? "",
       images,
-      type: type || types[0] || "General",
+      type: tags[0] || "General",
+      tags,
       tagline: tagline.trim(),
       description: description.trim(),
       usage: initial?.usage ?? "",
@@ -650,18 +657,23 @@ function ProductForm({
             </Field>
           </div>
 
-          <Field label="Tipo">
-            <select
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              className="input"
-            >
-              {types.map((t) => (
-                <option key={t} value={t}>
-                  {t}
-                </option>
-              ))}
-            </select>
+          <Field label={`Etiquetas (${tags.length}/5)`}>
+            <div className="flex flex-wrap gap-2">
+              {types.map((t) => {
+                const on = tags.includes(t);
+                return (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => toggleTag(t)}
+                    disabled={!on && tags.length >= 5}
+                    className={`px-3 py-1.5 rounded-full text-xs border transition-colors disabled:opacity-30 ${on ? "bg-primary text-primary-foreground border-primary" : "border-foreground/15 hover:bg-foreground/5"}`}
+                  >
+                    {t}
+                  </button>
+                );
+              })}
+            </div>
             <div className="flex gap-2 mt-2">
               <input
                 value={newType}
